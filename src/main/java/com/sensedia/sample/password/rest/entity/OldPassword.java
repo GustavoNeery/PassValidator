@@ -13,12 +13,9 @@ public class OldPassword {
 
     private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
-
-    public OldPassword(String password, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OldPassword(String password, LocalDateTime createdAt) {
         this.password = password;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
 }

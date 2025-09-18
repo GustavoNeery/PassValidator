@@ -25,6 +25,10 @@ public class User {
     @Getter
     private List<OldPassword> oldPasswords;
 
+    public User() {
+        
+    }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
