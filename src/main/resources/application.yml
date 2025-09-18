@@ -5,4 +5,4 @@ spring:
     name: PassValidator
   data:
     mongodb:
-      uri: mongodb://usuario:senha@servidor:27017/SEU_BANCO
+      uri: ${MONGO_URI}
