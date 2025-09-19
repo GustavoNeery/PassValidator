@@ -27,15 +27,15 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void register(RegisterRequestDto registerRequestDto) {
+    public User register(RegisterRequestDto registerRequestDto) {
         passwordValidator.validate(registerRequestDto);
         User userFound = findByUsername(registerRequestDto.username());
 
         if(userFound == null) {
-            create(registerRequestDto);
-        } else {
-            update(userFound, registerRequestDto);
+            return create(registerRequestDto);
         }
+
+        return update(userFound, registerRequestDto);
     }
 
     @Override
@@ -43,21 +43,26 @@ public class UserService implements IUserService {
         return userRepository.findByUsername(username);
     }
 
-    private void create(RegisterRequestDto registerRequestDto) {
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    private User create(RegisterRequestDto registerRequestDto) {
         final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
         User newUser = new User(
                 registerRequestDto.username(),
                 encodedPassword,
                 List.of(createOldPassword(encodedPassword))
         );
-        userRepository.save(newUser);
+        return userRepository.save(newUser);
     }
 
-    private void update(User userFound, RegisterRequestDto registerRequestDto) {
+    private User update(User userFound, RegisterRequestDto registerRequestDto) {
         final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
         userFound.setPassword(encodedPassword);
         userFound.getOldPasswords().add(createOldPassword(encodedPassword));
-        userRepository.save(userFound);
+        return userRepository.save(userFound);
     }
 
     public OldPassword createOldPassword(String password) {

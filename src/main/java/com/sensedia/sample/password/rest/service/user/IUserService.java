@@ -5,7 +5,9 @@ import com.sensedia.sample.password.rest.entity.User;
 
 public interface IUserService {
 
-    void register(RegisterRequestDto registerRequestDto);
+    User register(RegisterRequestDto registerRequestDto);
 
     User findByUsername(String username);
+
+    User save(User user);
 }
