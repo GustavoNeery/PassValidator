@@ -5,6 +5,7 @@ import com.sensedia.sample.password.rest.entity.OldPassword;
 import com.sensedia.sample.password.rest.entity.User;
 import com.sensedia.sample.password.rest.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,12 +15,15 @@ import java.util.List;
 public class UserService implements IUserService {
 
     private final IUserRepository userRepository;
+    private  final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(IUserRepository userRepository) {
+    public UserService(IUserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    @Override
     public void register(RegisterRequestDto registerRequestDto) {
         User userFound = findByUsername(registerRequestDto.username());
 
@@ -30,28 +34,26 @@ public class UserService implements IUserService {
         }
     }
 
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     private void create(RegisterRequestDto registerRequestDto) {
+        final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
         User newUser = new User(
                 registerRequestDto.username(),
-                registerRequestDto.password(),
-                List.of(createOldPassword(registerRequestDto.password()))
+                encodedPassword,
+                List.of(createOldPassword(encodedPassword))
         );
         userRepository.save(newUser);
     }
 
     private void update(User userFound, RegisterRequestDto registerRequestDto) {
-        userFound.setPassword(registerRequestDto.password());
-        userFound.getOldPasswords().add(createOldPassword(registerRequestDto.password()));
+        final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
+        userFound.setPassword(encodedPassword);
+        userFound.getOldPasswords().add(createOldPassword(encodedPassword));
         userRepository.save(userFound);
-    }
-
-    @Override
-    public User save(User user) {
-        return userRepository.save(user);
-    }
-
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
     }
 
     public OldPassword createOldPassword(String password) {
