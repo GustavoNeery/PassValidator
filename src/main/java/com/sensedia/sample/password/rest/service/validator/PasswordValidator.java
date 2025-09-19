@@ -8,13 +8,13 @@ import java.util.List;
 
 public class PasswordValidator {
     private static final String INITIAL_MESSAGE = "A senha deve conter pelo menos ";
-    private static final String IS_SMALLER_THAN_8_CARACTHERES_MESSAGE = "8 caracteres.";
+    private static final String IS_SMALLER_THAN_8_CHARACTERS_MESSAGE = "8 caracteres.";
     private static final String HAS_NO_CAPITAL_LETTER_MESSAGE = "uma letra maiúscula.";
 
 
     public void validate(RegisterRequestDto registerRequestDto) {
         List<InvalidCasesDto> invalidCases = List.of(
-                new InvalidCasesDto(this::isSmallerThan8Caracteres, INITIAL_MESSAGE + IS_SMALLER_THAN_8_CARACTHERES_MESSAGE),
+                new InvalidCasesDto(this::isSmallerThan8Characters, INITIAL_MESSAGE + IS_SMALLER_THAN_8_CHARACTERS_MESSAGE),
                 new InvalidCasesDto(this::hasNoCapitalLetter, INITIAL_MESSAGE + HAS_NO_CAPITAL_LETTER_MESSAGE)
         );
 
@@ -28,7 +28,7 @@ public class PasswordValidator {
         }
     }
 
-    private boolean isSmallerThan8Caracteres(RegisterRequestDto registerRequestDto) {
+    private boolean isSmallerThan8Characters(RegisterRequestDto registerRequestDto) {
         return registerRequestDto.password().length() < 8;
     }
 
