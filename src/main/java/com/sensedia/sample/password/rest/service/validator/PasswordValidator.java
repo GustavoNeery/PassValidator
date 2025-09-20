@@ -11,7 +11,8 @@ public class PasswordValidator {
     private static final String IS_SMALLER_THAN_8_CHARACTERS_MESSAGE = "8 caracteres.";
     private static final String HAS_NO_CAPITAL_LETTER_MESSAGE = "uma letra maiúscula.";
     private static final String IS_NOT_PASSWORD_MATCH_MESSAGE = "A senha de confirmação precisa ser igual a senha inserida.";
-
+    private static final String HAS_NO_LOWERCASE_LETTER_MESSAGE = "uma letra minúscula.";
+    private static final String HAS_NO_NUMBER_MESSAGE = "um número.";
 
     public void validate(RegisterRequestDto registerRequestDto) {
         if (isNotPasswordMatch(registerRequestDto)) {
@@ -21,7 +22,9 @@ public class PasswordValidator {
         List<InvalidCasesDto> invalidCases = List.of(
                 new InvalidCasesDto(this::isSmallerThan8Characters, INITIAL_MESSAGE + IS_SMALLER_THAN_8_CHARACTERS_MESSAGE),
                 new InvalidCasesDto(this::hasNoCapitalLetter, INITIAL_MESSAGE + HAS_NO_CAPITAL_LETTER_MESSAGE),
-                new InvalidCasesDto(this::isNotPasswordMatch,  IS_NOT_PASSWORD_MATCH_MESSAGE)
+                new InvalidCasesDto(this::isNotPasswordMatch,  IS_NOT_PASSWORD_MATCH_MESSAGE),
+                new InvalidCasesDto(this::hasNoLowercaseLetter, INITIAL_MESSAGE + HAS_NO_LOWERCASE_LETTER_MESSAGE),
+                new InvalidCasesDto(this::hasNoNumber, INITIAL_MESSAGE + HAS_NO_NUMBER_MESSAGE)
         );
 
         List<String> errors = invalidCases.stream()
@@ -44,5 +47,13 @@ public class PasswordValidator {
 
     private boolean isNotPasswordMatch(RegisterRequestDto registerRequestDto) {
         return !registerRequestDto.password().equals(registerRequestDto.confirmPassword());
+    }
+
+    public boolean hasNoLowercaseLetter(RegisterRequestDto registerRequestDto) {
+        return registerRequestDto.password().chars().noneMatch(Character::isLowerCase);
+    }
+
+    public boolean hasNoNumber(RegisterRequestDto registerRequestDto) {
+        return registerRequestDto.password().chars().noneMatch(Character::isDigit);
     }
 }
