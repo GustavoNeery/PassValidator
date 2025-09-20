@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 public class UserService implements IUserService {
+    private static final int MAX_PASSWORD_HISTORY_SIZE = 5;
 
     private final IUserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -50,22 +51,33 @@ public class UserService implements IUserService {
 
     private User create(RegisterRequestDto registerRequestDto) {
         final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
+
         User newUser = new User(
                 registerRequestDto.username(),
                 encodedPassword,
                 List.of(createOldPassword(encodedPassword))
         );
+
         return userRepository.save(newUser);
     }
 
     private User update(User userFound, RegisterRequestDto registerRequestDto) {
+        maintainPasswordHistoryLimit(userFound);
         final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
+
         userFound.setPassword(encodedPassword);
         userFound.getOldPasswords().add(createOldPassword(encodedPassword));
+
         return userRepository.save(userFound);
     }
 
-    public OldPassword createOldPassword(String password) {
+    private void maintainPasswordHistoryLimit(User userFound) {
+        if(userFound.getOldPasswords().size() >= MAX_PASSWORD_HISTORY_SIZE) {
+            userFound.getOldPasswords().removeFirst();
+        }
+    }
+
+    private OldPassword createOldPassword(String password) {
         return new OldPassword(password, LocalDateTime.now());
     }
 }
