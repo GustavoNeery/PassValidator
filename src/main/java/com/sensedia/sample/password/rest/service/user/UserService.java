@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 public class UserService implements IUserService {
+    private static final int MAX_PASSWORD_HISTORY_SIZE = 5;
 
     private final IUserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -27,15 +28,15 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void register(RegisterRequestDto registerRequestDto) {
+    public User register(RegisterRequestDto registerRequestDto) {
         passwordValidator.validate(registerRequestDto);
         User userFound = findByUsername(registerRequestDto.username());
 
         if(userFound == null) {
-            create(registerRequestDto);
-        } else {
-            update(userFound, registerRequestDto);
+            return create(registerRequestDto);
         }
+
+        return update(userFound, registerRequestDto);
     }
 
     @Override
@@ -43,24 +44,40 @@ public class UserService implements IUserService {
         return userRepository.findByUsername(username);
     }
 
-    private void create(RegisterRequestDto registerRequestDto) {
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    private User create(RegisterRequestDto registerRequestDto) {
         final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
+
         User newUser = new User(
                 registerRequestDto.username(),
                 encodedPassword,
                 List.of(createOldPassword(encodedPassword))
         );
-        userRepository.save(newUser);
+
+        return userRepository.save(newUser);
     }
 
-    private void update(User userFound, RegisterRequestDto registerRequestDto) {
+    private User update(User userFound, RegisterRequestDto registerRequestDto) {
+        maintainPasswordHistoryLimit(userFound);
         final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
+
         userFound.setPassword(encodedPassword);
         userFound.getOldPasswords().add(createOldPassword(encodedPassword));
-        userRepository.save(userFound);
+
+        return userRepository.save(userFound);
     }
 
-    public OldPassword createOldPassword(String password) {
+    private void maintainPasswordHistoryLimit(User userFound) {
+        if(userFound.getOldPasswords().size() >= MAX_PASSWORD_HISTORY_SIZE) {
+            userFound.getOldPasswords().removeFirst();
+        }
+    }
+
+    private OldPassword createOldPassword(String password) {
         return new OldPassword(password, LocalDateTime.now());
     }
 }
