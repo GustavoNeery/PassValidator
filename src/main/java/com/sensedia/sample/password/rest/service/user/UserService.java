@@ -3,6 +3,7 @@ package com.sensedia.sample.password.rest.service.user;
 import com.sensedia.sample.password.rest.dto.RegisterRequestDto;
 import com.sensedia.sample.password.rest.entity.OldPassword;
 import com.sensedia.sample.password.rest.entity.User;
+import com.sensedia.sample.password.rest.exception.InvalidPasswordException;
 import com.sensedia.sample.password.rest.repository.IUserRepository;
 import com.sensedia.sample.password.rest.service.validator.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,13 @@ public class UserService implements IUserService {
     public UserService(IUserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.passwordValidator = new PasswordValidator();
+        this.passwordValidator = new PasswordValidator(bCryptPasswordEncoder);
     }
 
     @Override
     public User register(RegisterRequestDto registerRequestDto) {
-        passwordValidator.validate(registerRequestDto);
         User userFound = findByUsername(registerRequestDto.username());
+        passwordValidator.validate(registerRequestDto, userFound);
 
         if(userFound == null) {
             return create(registerRequestDto);
@@ -62,9 +63,9 @@ public class UserService implements IUserService {
     }
 
     private User update(User userFound, RegisterRequestDto registerRequestDto) {
-        maintainPasswordHistoryLimit(userFound);
         final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
 
+        maintainPasswordHistoryLimit(userFound);
         userFound.setPassword(encodedPassword);
         userFound.getOldPasswords().add(createOldPassword(encodedPassword));
 
