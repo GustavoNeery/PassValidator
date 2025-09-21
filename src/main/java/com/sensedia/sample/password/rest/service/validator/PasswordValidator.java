@@ -19,10 +19,10 @@ public class PasswordValidator {
     private static final String IS_NOT_PASSWORD_MATCH_MESSAGE = "A senha de confirmação precisa ser igual a senha inserida.";
     private static final String HAS_NO_LOWERCASE_LETTER_MESSAGE = "uma letra minúscula.";
     private static final String HAS_NO_NUMBER_MESSAGE = "um número.";
-    private static final String HAS_NO_SPECIAL_CHARACTER = "um caracatere especial.";
-    private static final String IS_COMMON_PASSWORD = "Não pode ser uma senha comum.";
-    private static final String HAS_ONE_OF_LAST_FIVE_PASSWORDS = "Não pode repetir suas últimas 5 senhas.";
-    private static final String HAS_USERNAME_IN_PASSWORD = "A senha não pode conter o nome de usuário.";
+    private static final String HAS_NO_SPECIAL_CHARACTER_MESSAGE = "um caracatere especial.";
+    private static final String IS_COMMON_PASSWORD_MESSAGE = "Não pode ser uma senha comum.";
+    private static final String HAS_ONE_OF_LAST_FIVE_PASSWORDS_MESSAGE = "Não pode repetir suas últimas 5 senhas.";
+    private static final String HAS_USERNAME_IN_PASSWORD_MESSAGE = "A senha não pode conter o nome de usuário.";
     private static final List<String> COMMON_PASSWORDS = List.of("12345678", "password");
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -43,12 +43,12 @@ public class PasswordValidator {
                 new InvalidCasesDto(this::isNotPasswordMatch,  IS_NOT_PASSWORD_MATCH_MESSAGE),
                 new InvalidCasesDto(this::hasNoLowercaseLetter, INITIAL_MESSAGE + HAS_NO_LOWERCASE_LETTER_MESSAGE),
                 new InvalidCasesDto(this::hasNoNumber, INITIAL_MESSAGE + HAS_NO_NUMBER_MESSAGE),
-                new InvalidCasesDto(this::hasNoSpecialCharacter, INITIAL_MESSAGE + HAS_NO_SPECIAL_CHARACTER),
-                new InvalidCasesDto(this::isCommonPassword, IS_COMMON_PASSWORD),
+                new InvalidCasesDto(this::hasNoSpecialCharacter, INITIAL_MESSAGE + HAS_NO_SPECIAL_CHARACTER_MESSAGE),
+                new InvalidCasesDto(this::isCommonPassword, IS_COMMON_PASSWORD_MESSAGE),
                 new InvalidCasesDto((dto) -> hasOneOfLastFivePasswords(user, dto.password()),
-                        HAS_ONE_OF_LAST_FIVE_PASSWORDS
+                        HAS_ONE_OF_LAST_FIVE_PASSWORDS_MESSAGE
                 ),
-                new InvalidCasesDto(this::hasUsernameInPassword, HAS_USERNAME_IN_PASSWORD)
+                new InvalidCasesDto(this::hasUsernameInPassword, HAS_USERNAME_IN_PASSWORD_MESSAGE)
         );
 
         List<String> errors = invalidCases.stream()
