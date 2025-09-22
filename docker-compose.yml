@@ -1,0 +1,27 @@
+services:
+  app:
+    build: .
+    container_name: validator-app
+    depends_on:
+      - db
+    environment:
+      - MONGO_URI=mongodb://admin:123@db:27017/validator-database?authSource=admin
+    ports:
+      - "8099:8099"
+    networks:
+      - app-net
+
+  db:
+    image: mongo
+    container_name: validator-db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=123
+    ports:
+      - "27017:27017"
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge

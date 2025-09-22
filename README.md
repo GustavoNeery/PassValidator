@@ -15,7 +15,7 @@
 
 ## 💻 Sobre o projeto
 
-O password validator api foi criado para realizar validação de senhas de acordo com regras de segurança pré-definidas. Projeto desenvolvido para um desafio técnico da empresa Sensedia.
+O PassValidator API foi criado para realizar validação de senhas de acordo com regras de segurança pré-definidas. Projeto desenvolvido para um desafio técnico da empresa Sensedia.
 
 ## ⚙️ Validações
 
@@ -51,6 +51,12 @@ $ cd PassValidator
 
 ```bash
 $ cp .env.example .env
+```
+
+### Execute o comando abaixo para buildar a aplicação e gerar o .jar
+
+```bash
+$ mvn clean package -DskipTests
 ```
 
 ### Execute o comando abaixo para criar a imagem da aplicação
