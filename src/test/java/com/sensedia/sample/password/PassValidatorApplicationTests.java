@@ -17,27 +17,27 @@ class PassValidatorApplicationTests {
     private static final String PASSWORD = "senhaqualquer";
 
     private static final String PASSWORD_IS_SMALLER_THAN_8_CHARACTERS = "Se-123";
-    private static final String IS_SMALLER_THAN_8_CHARACTERS_MESSAGE = "A senha deve conter pelo menos 8 caracteres.";
+    private static final String IS_SMALLER_THAN_8_CHARACTERS_MESSAGE = "A senha deve conter pelo menos 8 caracteres";
 
     private static final String PASSWORD_HAS_NO_CAPITAL_LETTER = "senh-123";
-    private static final String HAS_NO_CAPITAL_LETTER_MESSAGE = "A senha deve conter pelo menos uma letra maiúscula.";
+    private static final String HAS_NO_CAPITAL_LETTER_MESSAGE = "A senha deve conter pelo menos uma letra maiúscula";
 
     private static final String PASSWORD_IS_NOT_PASSWORD_MATCH = "senh-123";
-    private static final String IS_NOT_PASSWORD_MATCH_MESSAGE = "A senha de confirmação precisa ser igual a senha inserida.";
+    private static final String IS_NOT_PASSWORD_MATCH_MESSAGE = "A senha de confirmação precisa ser igual a senha inserida";
 
     private static final String PASSWORD_HAS_NO_LOWERCASE_LETTER = "SENH-123";
-    private static final String HAS_NO_LOWERCASE_LETTER_MESSAGE = "A senha deve conter pelo menos uma letra minúscula.";
+    private static final String HAS_NO_LOWERCASE_LETTER_MESSAGE = "A senha deve conter pelo menos uma letra minúscula";
 
     private static final String PASSWORD_HAS_NO_NUMBER = "Senh----";
-    private static final String HAS_NO_NUMBER_MESSAGE = "A senha deve conter pelo menos um número.";
+    private static final String HAS_NO_NUMBER_MESSAGE = "A senha deve conter pelo menos um número";
 
     private static final String PASSWORD_HAS_NO_SPECIAL_CHARACTER = "Senha1234";
-    private static final String HAS_NO_SPECIAL_CHARACTER_MESSAGE = "A senha deve conter pelo menos um caracatere especial.";
+    private static final String HAS_NO_SPECIAL_CHARACTER_MESSAGE = "A senha deve conter pelo menos um caracatere especial";
 
     private static final String IS_COMMON_PASSWORD = "12345678";
 
     private static final String HAS_USERNAME_IN_PASSWORD = "usernameA-123";
-    private static final String HAS_USERNAME_IN_PASSWORD_MESSAGE = "A senha não pode conter o nome de usuário.";
+    private static final String HAS_USERNAME_IN_PASSWORD_MESSAGE = "A senha não pode conter o nome de usuário";
 
     @Autowired
     private UserService userService;

@@ -21,13 +21,13 @@ import java.util.List;
 @SpringBootTest
 public class UpdateUserWithPasswordHistoryLimitTest {
     private static final String USERNAME = "username";
-    private static final String PASSWORD1 = "Nova1234";
-    private static final String PASSWORD2 = "Novb1234";
-    private static final String PASSWORD3 = "Novc1234";
-    private static final String PASSWORD4 = "Novd1234";
-    private static final String PASSWORD5 = "Nove1234";
-    private static final String NEW_PASSWORD6 = "NovF1234";
-    private static final String NEW_CONFIRM_PASSWORD6 = "NovF1234";
+    private static final String PASSWORD1 = "Nova-1234";
+    private static final String PASSWORD2 = "Novb-1234";
+    private static final String PASSWORD3 = "Novc-1234";
+    private static final String PASSWORD4 = "Novd-1234";
+    private static final String PASSWORD5 = "Nove-1234";
+    private static final String NEW_PASSWORD6 = "NovF-1234";
+    private static final String NEW_CONFIRM_PASSWORD6 = "NovF-1234";
     private static final int NUMBER_OF_PASSWORDS = 5;
 
     @MockitoSpyBean

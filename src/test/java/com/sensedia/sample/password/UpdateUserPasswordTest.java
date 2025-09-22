@@ -23,9 +23,9 @@ import java.util.List;
 @SpringBootTest
 public class UpdateUserPasswordTest {
     private static final String USERNAME = "username";
-    private static final String PASSWORD = "Senha123";
-    private static final String NEW_PASSWORD = "Nova1234";
-    private static final String NEW_CONFIRM_PASSWORD = "Nova1234";
+    private static final String PASSWORD = "Senha-123";
+    private static final String NEW_PASSWORD = "Nova-1234";
+    private static final String NEW_CONFIRM_PASSWORD = "Nova-1234";
     private static final int NUMBER_OF_PASSWORDS = 2;
 
     @MockitoSpyBean
