@@ -95,8 +95,15 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - Padrão de Commits: [Conventional Commits](https://conventionalcommits.org/en/v1.0.0/)
 - Teste de API: [Insomnia](https://insomnia.rest/)
 
-## 👨‍💻 Exemplo de requisições
+## 👨‍💻 Exemplo de requisição
 
-- 
+  **[POST]** `/password-validations`
+
+- Payload de exemplo:
+  -   {
+      "user": "joao",
+      "password": "vYQIYxO&pyfI^r",
+      "confirmPassword":"vYQIYxO&pyfI^r"
+      }
 
 
