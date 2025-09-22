@@ -13,21 +13,21 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @Import(TestContainersConfiguration.class)
 @SpringBootTest
-public class RegisterTest {
+public class CreateUserTest {
 
     private static final String USERNAME = "username";
-    private static final String PASSWORD = "Senha123";
+    private static final String PASSWORD = "Senha-123";
 
     @MockitoSpyBean
     private UserService userService;
 
     @Test
-    @DisplayName("Should register new user with success")
-    void shouldRegisterNewUserWithSuccess() {
+    @DisplayName("Should invokeCreateOrUpdate new user with success")
+    void shouldCreateUserWithSuccess() {
         Mockito.when(userService.findByUsername(USERNAME))
                 .thenReturn(null);
 
-        User userCreated = userService.register(new RegisterRequestDto(USERNAME, PASSWORD, PASSWORD));
+        User userCreated = userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, PASSWORD, PASSWORD));
 
         Assertions.assertNotNull(userCreated);
         Assertions.assertEquals(USERNAME, userCreated.getUsername());

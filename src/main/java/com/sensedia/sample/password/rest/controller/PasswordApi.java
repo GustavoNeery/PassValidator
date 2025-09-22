@@ -25,8 +25,8 @@ public class PasswordApi implements IPasswordApi {
 	}
 
     @Override
-    public ResponseEntity<Object> register(RegisterRequestDto registerRequestDto) {
-        userService.register(registerRequestDto);
+    public ResponseEntity<Object> createOrUpdate(RegisterRequestDto registerRequestDto) {
+        userService.invokeCreateOrUpdate(registerRequestDto);
         return ResponseEntity.noContent().build();
     }
 

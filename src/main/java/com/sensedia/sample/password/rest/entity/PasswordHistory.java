@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-public class OldPassword {
+public class PasswordHistory {
 
     private String password;
 
     private LocalDateTime createdAt;
 
-    public OldPassword(String password, LocalDateTime createdAt) {
+    public PasswordHistory(String password, LocalDateTime createdAt) {
         this.password = password;
         this.createdAt = createdAt;
     }

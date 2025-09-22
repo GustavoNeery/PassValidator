@@ -2,7 +2,7 @@ package com.sensedia.sample.password.rest.service.validator;
 
 import com.sensedia.sample.password.rest.dto.InvalidCasesDto;
 import com.sensedia.sample.password.rest.dto.RegisterRequestDto;
-import com.sensedia.sample.password.rest.entity.OldPassword;
+import com.sensedia.sample.password.rest.entity.PasswordHistory;
 import com.sensedia.sample.password.rest.entity.User;
 import com.sensedia.sample.password.rest.exception.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,9 +94,9 @@ public class PasswordValidator {
 
     private boolean hasOneOfLastFivePasswords(User userFound, String password) {
         if(userFound != null) {
-            return userFound.getOldPasswords()
+            return userFound.getPasswordHistories()
                     .stream()
-                    .map(OldPassword::getPassword).anyMatch(pwd -> bCryptPasswordEncoder.matches(password, pwd));
+                    .map(PasswordHistory::getPassword).anyMatch(pwd -> bCryptPasswordEncoder.matches(password, pwd));
         }
 
         return false;

@@ -12,5 +12,5 @@ public interface IPasswordApi {
 	ResponseEntity<Object> findAll();
 
     @PostMapping(value = "/password-validations", produces = { "application/json" })
-    ResponseEntity<Object> register(@RequestBody RegisterRequestDto registerRequestDto);
+    ResponseEntity<Object> createOrUpdate(@RequestBody RegisterRequestDto registerRequestDto);
 }

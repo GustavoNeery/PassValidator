@@ -1,7 +1,7 @@
 package com.sensedia.sample.password;
 
 import com.sensedia.sample.password.rest.dto.RegisterRequestDto;
-import com.sensedia.sample.password.rest.entity.OldPassword;
+import com.sensedia.sample.password.rest.entity.PasswordHistory;
 import com.sensedia.sample.password.rest.entity.User;
 import com.sensedia.sample.password.rest.service.user.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -21,30 +21,30 @@ import java.util.List;
 @SpringBootTest
 public class UpdateUserWithPasswordHistoryLimitTest {
     private static final String USERNAME = "username";
-    private static final String PASSWORD1 = "Nova1234";
-    private static final String PASSWORD2 = "Novb1234";
-    private static final String PASSWORD3 = "Novc1234";
-    private static final String PASSWORD4 = "Novd1234";
-    private static final String PASSWORD5 = "Nove1234";
-    private static final String NEW_PASSWORD6 = "NovF1234";
-    private static final String NEW_CONFIRM_PASSWORD6 = "NovF1234";
+    private static final String PASSWORD1 = "Nova-1234";
+    private static final String PASSWORD2 = "Novb-1234";
+    private static final String PASSWORD3 = "Novc-1234";
+    private static final String PASSWORD4 = "Novd-1234";
+    private static final String PASSWORD5 = "Nove-1234";
+    private static final String NEW_PASSWORD6 = "NovF-1234";
+    private static final String NEW_CONFIRM_PASSWORD6 = "NovF-1234";
     private static final int NUMBER_OF_PASSWORDS = 5;
 
     @MockitoSpyBean
     private UserService userService;
 
     private User user;
-    List<OldPassword> oldPasswordsUser;
+    List<PasswordHistory> passwordsUserHistory;
 
     @BeforeEach
     void setUp() {
-        oldPasswordsUser = new ArrayList<>();
-        oldPasswordsUser.add(makeOldPassword(PASSWORD1));
-        oldPasswordsUser.add(makeOldPassword(PASSWORD2));
-        oldPasswordsUser.add(makeOldPassword(PASSWORD3));
-        oldPasswordsUser.add(makeOldPassword(PASSWORD4));
-        oldPasswordsUser.add(makeOldPassword(PASSWORD5));
-        user = makeUser(oldPasswordsUser);
+        passwordsUserHistory = new ArrayList<>();
+        passwordsUserHistory.add(makeOldPassword(PASSWORD1));
+        passwordsUserHistory.add(makeOldPassword(PASSWORD2));
+        passwordsUserHistory.add(makeOldPassword(PASSWORD3));
+        passwordsUserHistory.add(makeOldPassword(PASSWORD4));
+        passwordsUserHistory.add(makeOldPassword(PASSWORD5));
+        user = makeUser(passwordsUserHistory);
     }
 
     @Test
@@ -53,24 +53,24 @@ public class UpdateUserWithPasswordHistoryLimitTest {
         Mockito.when(userService.findByUsername(USERNAME))
                 .thenReturn(user);
 
-        User userUpdated = userService.register(new RegisterRequestDto(USERNAME, NEW_PASSWORD6, NEW_CONFIRM_PASSWORD6));
+        User userUpdated = userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, NEW_PASSWORD6, NEW_CONFIRM_PASSWORD6));
 
         Assertions.assertEquals(USERNAME, userUpdated.getUsername());
-        Assertions.assertEquals(NUMBER_OF_PASSWORDS, userUpdated.getOldPasswords().size());
+        Assertions.assertEquals(NUMBER_OF_PASSWORDS, userUpdated.getPasswordHistories().size());
     }
 
-    private User makeUser(List<OldPassword> oldPasswords) {
+    private User makeUser(List<PasswordHistory> passwordHistories) {
         User user = new User();
 
         user.setUsername(USERNAME);
         user.setPassword(PASSWORD1);
-        user.setOldPasswords(oldPasswords);
+        user.setPasswordHistories(passwordHistories);
 
         return userService.save(user);
     }
 
-    private OldPassword makeOldPassword(String NEW_PASSWORD)
+    private PasswordHistory makeOldPassword(String NEW_PASSWORD)
     {
-        return new OldPassword(NEW_PASSWORD, LocalDateTime.now());
+        return new PasswordHistory(NEW_PASSWORD, LocalDateTime.now());
     }
 }

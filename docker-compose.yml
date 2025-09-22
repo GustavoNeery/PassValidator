@@ -5,7 +5,7 @@ services:
     depends_on:
       - db
     environment:
-      - MONGO_URI=mongodb://admin:123@db:27017/validator-database?authSource=admin
+      - MONGO_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@db:27017/validator-database?authSource=admin
     ports:
       - "8099:8099"
     networks:
