@@ -22,12 +22,12 @@ public class RegisterTest {
     private UserService userService;
 
     @Test
-    @DisplayName("Should register new user with success")
+    @DisplayName("Should invokeCreateOrUpdate new user with success")
     void shouldRegisterNewUserWithSuccess() {
         Mockito.when(userService.findByUsername(USERNAME))
                 .thenReturn(null);
 
-        User userCreated = userService.register(new RegisterRequestDto(USERNAME, PASSWORD, PASSWORD));
+        User userCreated = userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, PASSWORD, PASSWORD));
 
         Assertions.assertNotNull(userCreated);
         Assertions.assertEquals(USERNAME, userCreated.getUsername());

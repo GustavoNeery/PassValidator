@@ -24,7 +24,7 @@ public class User {
 
     @Setter
     @Getter
-    private List<OldPassword> oldPasswords;
+    private List<PasswordHistory> passwordHistories;
 
     public User() {
         
@@ -35,10 +35,10 @@ public class User {
         this.password = password;
     }
 
-    public User(String username, String password, List<OldPassword> oldPasswordList) {
+    public User(String username, String password, List<PasswordHistory> passwordHistoryList) {
         this.username = username;
         this.password = password;
-        this.oldPasswords = oldPasswordList;
+        this.passwordHistories = passwordHistoryList;
     }
 
     @Override

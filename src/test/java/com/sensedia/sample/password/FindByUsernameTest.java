@@ -1,6 +1,6 @@
 package com.sensedia.sample.password;
 
-import com.sensedia.sample.password.rest.entity.OldPassword;
+import com.sensedia.sample.password.rest.entity.PasswordHistory;
 import com.sensedia.sample.password.rest.entity.User;
 import com.sensedia.sample.password.rest.service.user.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -25,11 +25,11 @@ public class FindByUsernameTest {
     private UserService userService;
 
     private User expectedUser;
-    private OldPassword oldPassword;
+    private PasswordHistory passwordHistory;
 
     @BeforeEach
     void setUp() {
-        oldPassword = makeOldPassword(PASSWORD);
+        passwordHistory = makeOldPassword(PASSWORD);
         expectedUser = makeUser();
     }
 
@@ -41,18 +41,18 @@ public class FindByUsernameTest {
     }
 
     private User makeUser() {
-        List<OldPassword> oldPasswords = new ArrayList<>();
-        oldPasswords.add(oldPassword);
+        List<PasswordHistory> passwordHistories = new ArrayList<>();
+        passwordHistories.add(passwordHistory);
 
         User user = new User();
         user.setUsername(USERNAME);
         user.setPassword(PASSWORD);
-        user.setOldPasswords(oldPasswords);
+        user.setPasswordHistories(passwordHistories);
 
         return userService.save(user);
     }
 
-    private OldPassword makeOldPassword(String password) {
-        return new OldPassword(password, LocalDateTime.now());
+    private PasswordHistory makeOldPassword(String password) {
+        return new PasswordHistory(password, LocalDateTime.now());
     }
 }

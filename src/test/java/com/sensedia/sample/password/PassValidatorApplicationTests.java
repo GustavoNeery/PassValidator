@@ -1,7 +1,6 @@
 package com.sensedia.sample.password;
 
 import com.sensedia.sample.password.rest.dto.RegisterRequestDto;
-import com.sensedia.sample.password.rest.entity.OldPassword;
 import com.sensedia.sample.password.rest.exception.InvalidPasswordException;
 import com.sensedia.sample.password.rest.service.user.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -46,7 +45,7 @@ class PassValidatorApplicationTests {
     @Test
     @DisplayName("Should throw exception when password is smaller than 8 characters")
     void shouldThrowExceptionWhenPasswordIsSmallerThan8Characters() {
-        InvalidPasswordException exception = Assertions.assertThrows(InvalidPasswordException.class, () -> userService.register(new RegisterRequestDto(USERNAME, PASSWORD_IS_SMALLER_THAN_8_CHARACTERS, PASSWORD_IS_SMALLER_THAN_8_CHARACTERS)));
+        InvalidPasswordException exception = Assertions.assertThrows(InvalidPasswordException.class, () -> userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, PASSWORD_IS_SMALLER_THAN_8_CHARACTERS, PASSWORD_IS_SMALLER_THAN_8_CHARACTERS)));
         Assertions.assertEquals(IS_SMALLER_THAN_8_CHARACTERS_MESSAGE, exception.getMessage());
     }
 
@@ -55,7 +54,7 @@ class PassValidatorApplicationTests {
     void shouldThrowExceptionWhenPasswordHasNoCapitalLetter() {
         InvalidPasswordException exception = Assertions.assertThrows(
                 InvalidPasswordException.class,
-                () -> userService.register(new RegisterRequestDto(USERNAME, PASSWORD_HAS_NO_CAPITAL_LETTER, PASSWORD_HAS_NO_CAPITAL_LETTER))
+                () -> userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, PASSWORD_HAS_NO_CAPITAL_LETTER, PASSWORD_HAS_NO_CAPITAL_LETTER))
         );
         Assertions.assertEquals(HAS_NO_CAPITAL_LETTER_MESSAGE, exception.getMessage());
     }
@@ -65,7 +64,7 @@ class PassValidatorApplicationTests {
     void shouldThrowExceptionWhenPasswordAndConfirmPasswordDoNotMatch() {
         InvalidPasswordException exception = Assertions.assertThrows(
                 InvalidPasswordException.class,
-                () -> userService.register(new RegisterRequestDto(USERNAME, PASSWORD_IS_NOT_PASSWORD_MATCH, PASSWORD))
+                () -> userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, PASSWORD_IS_NOT_PASSWORD_MATCH, PASSWORD))
         );
         Assertions.assertEquals(IS_NOT_PASSWORD_MATCH_MESSAGE, exception.getMessage());
     }
@@ -75,7 +74,7 @@ class PassValidatorApplicationTests {
     void shouldThrowExceptionWhenPasswordHasNoLowercaseLetter() {
         InvalidPasswordException exception = Assertions.assertThrows(
                 InvalidPasswordException.class,
-                () -> userService.register(new RegisterRequestDto(USERNAME, PASSWORD_HAS_NO_LOWERCASE_LETTER, PASSWORD_HAS_NO_LOWERCASE_LETTER))
+                () -> userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, PASSWORD_HAS_NO_LOWERCASE_LETTER, PASSWORD_HAS_NO_LOWERCASE_LETTER))
         );
         Assertions.assertEquals(HAS_NO_LOWERCASE_LETTER_MESSAGE, exception.getMessage());
     }
@@ -85,7 +84,7 @@ class PassValidatorApplicationTests {
     void shouldThrowExceptionWhenPasswordHasNoNumber() {
         InvalidPasswordException exception = Assertions.assertThrows(
                 InvalidPasswordException.class,
-                () -> userService.register(new RegisterRequestDto(USERNAME, PASSWORD_HAS_NO_NUMBER, PASSWORD_HAS_NO_NUMBER))
+                () -> userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, PASSWORD_HAS_NO_NUMBER, PASSWORD_HAS_NO_NUMBER))
         );
         Assertions.assertEquals(HAS_NO_NUMBER_MESSAGE, exception.getMessage());
     }
@@ -95,7 +94,7 @@ class PassValidatorApplicationTests {
     void shouldThrowExceptionWhenPasswordHasNoSpecialCharacter() {
         InvalidPasswordException exception = Assertions.assertThrows(
                 InvalidPasswordException.class,
-                () -> userService.register(new RegisterRequestDto(USERNAME, PASSWORD_HAS_NO_SPECIAL_CHARACTER, PASSWORD_HAS_NO_SPECIAL_CHARACTER))
+                () -> userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, PASSWORD_HAS_NO_SPECIAL_CHARACTER, PASSWORD_HAS_NO_SPECIAL_CHARACTER))
         );
         Assertions.assertEquals(HAS_NO_SPECIAL_CHARACTER_MESSAGE, exception.getMessage());
     }
@@ -105,7 +104,7 @@ class PassValidatorApplicationTests {
     void shouldThrowExceptionWhenPasswordIsCommonPassword() {
         Assertions.assertThrows(
                 InvalidPasswordException.class,
-                () -> userService.register(new RegisterRequestDto(USERNAME, IS_COMMON_PASSWORD, IS_COMMON_PASSWORD))
+                () -> userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, IS_COMMON_PASSWORD, IS_COMMON_PASSWORD))
         );
     }
 
@@ -114,7 +113,7 @@ class PassValidatorApplicationTests {
     void shouldThrowExceptionWhenPasswordContainsUsername() {
         InvalidPasswordException exception = Assertions.assertThrows(
                 InvalidPasswordException.class,
-                () -> userService.register(new RegisterRequestDto(USERNAME, HAS_USERNAME_IN_PASSWORD, HAS_USERNAME_IN_PASSWORD))
+                () -> userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, HAS_USERNAME_IN_PASSWORD, HAS_USERNAME_IN_PASSWORD))
         );
         Assertions.assertEquals(HAS_USERNAME_IN_PASSWORD_MESSAGE, exception.getMessage());
     }

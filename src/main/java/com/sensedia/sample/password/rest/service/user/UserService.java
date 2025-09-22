@@ -1,9 +1,8 @@
 package com.sensedia.sample.password.rest.service.user;
 
 import com.sensedia.sample.password.rest.dto.RegisterRequestDto;
-import com.sensedia.sample.password.rest.entity.OldPassword;
+import com.sensedia.sample.password.rest.entity.PasswordHistory;
 import com.sensedia.sample.password.rest.entity.User;
-import com.sensedia.sample.password.rest.exception.InvalidPasswordException;
 import com.sensedia.sample.password.rest.repository.IUserRepository;
 import com.sensedia.sample.password.rest.service.validator.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +28,17 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User register(RegisterRequestDto registerRequestDto) {
-        User userFound = findByUsername(registerRequestDto.username());
+    public User invokeCreateOrUpdate(RegisterRequestDto registerRequestDto) {
+        final User userFound = findByUsername(registerRequestDto.username());
+        final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
+
         passwordValidator.validate(registerRequestDto, userFound);
 
         if(userFound == null) {
-            return create(registerRequestDto);
+            return create(registerRequestDto, encodedPassword);
         }
 
-        return update(userFound, registerRequestDto);
+        return update(userFound, encodedPassword);
     }
 
     @Override
@@ -50,35 +51,31 @@ public class UserService implements IUserService {
         return userRepository.save(user);
     }
 
-    private User create(RegisterRequestDto registerRequestDto) {
-        final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
-
-        User newUser = new User(
+    private User create(RegisterRequestDto registerRequestDto, String encodedPassword) {
+        final User newUser = new User(
                 registerRequestDto.username(),
                 encodedPassword,
-                List.of(createOldPassword(encodedPassword))
+                List.of(createPasswordHistory(encodedPassword))
         );
 
         return userRepository.save(newUser);
     }
 
-    private User update(User userFound, RegisterRequestDto registerRequestDto) {
-        final String encodedPassword = bCryptPasswordEncoder.encode(registerRequestDto.password());
-
+    private User update(User userFound, String encodedPassword) {
         maintainPasswordHistoryLimit(userFound);
         userFound.setPassword(encodedPassword);
-        userFound.getOldPasswords().add(createOldPassword(encodedPassword));
+        userFound.getPasswordHistories().add(createPasswordHistory(encodedPassword));
 
         return userRepository.save(userFound);
     }
 
     private void maintainPasswordHistoryLimit(User userFound) {
-        if(userFound.getOldPasswords().size() >= MAX_PASSWORD_HISTORY_SIZE) {
-            userFound.getOldPasswords().removeFirst();
+        if(userFound.getPasswordHistories().size() >= MAX_PASSWORD_HISTORY_SIZE) {
+            userFound.getPasswordHistories().removeFirst();
         }
     }
 
-    private OldPassword createOldPassword(String password) {
-        return new OldPassword(password, LocalDateTime.now());
+    private PasswordHistory createPasswordHistory(String password) {
+        return new PasswordHistory(password, LocalDateTime.now());
     }
 }

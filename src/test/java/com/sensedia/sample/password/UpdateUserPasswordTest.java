@@ -1,7 +1,7 @@
 package com.sensedia.sample.password;
 
 import com.sensedia.sample.password.rest.dto.RegisterRequestDto;
-import com.sensedia.sample.password.rest.entity.OldPassword;
+import com.sensedia.sample.password.rest.entity.PasswordHistory;
 import com.sensedia.sample.password.rest.entity.User;
 import com.sensedia.sample.password.rest.service.user.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -34,11 +34,11 @@ public class UpdateUserPasswordTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private User user1;
-    private OldPassword oldPassword1;
+    private PasswordHistory passwordHistory1;
 
     @BeforeEach
     void setUp() {
-        oldPassword1 = makeOldPassword(NEW_PASSWORD);
+        passwordHistory1 = makeOldPassword(NEW_PASSWORD);
         user1 = makeUser();
     }
 
@@ -48,12 +48,12 @@ public class UpdateUserPasswordTest {
         Mockito.when(userService.findByUsername(USERNAME))
                 .thenReturn(user1);
 
-        User userUpdated = userService.register(new RegisterRequestDto(USERNAME, NEW_PASSWORD, NEW_CONFIRM_PASSWORD));
+        User userUpdated = userService.invokeCreateOrUpdate(new RegisterRequestDto(USERNAME, NEW_PASSWORD, NEW_CONFIRM_PASSWORD));
 
         Assertions.assertNotNull(userUpdated);
         Assertions.assertEquals(USERNAME, userUpdated.getUsername());
         Assertions.assertTrue(isPasswordMatch(NEW_PASSWORD, userUpdated.getPassword()));
-        Assertions.assertEquals(NUMBER_OF_PASSWORDS, userUpdated.getOldPasswords().size());
+        Assertions.assertEquals(NUMBER_OF_PASSWORDS, userUpdated.getPasswordHistories().size());
     }
 
     private boolean isPasswordMatch(String NEW_PASSWORD, String savedPassword) {
@@ -61,19 +61,19 @@ public class UpdateUserPasswordTest {
     }
 
     private User makeUser() {
-        List<OldPassword> oldPasswords = new ArrayList<>();
-        oldPasswords.add(oldPassword1);
+        List<PasswordHistory> passwordHistories = new ArrayList<>();
+        passwordHistories.add(passwordHistory1);
 
         User user = new User();
         user.setUsername(USERNAME);
         user.setPassword(PASSWORD);
-        user.setOldPasswords(oldPasswords);
+        user.setPasswordHistories(passwordHistories);
 
         return userService.save(user);
     }
 
-    private OldPassword makeOldPassword(String NEW_PASSWORD)
+    private PasswordHistory makeOldPassword(String NEW_PASSWORD)
     {
-        return new OldPassword(NEW_PASSWORD, LocalDateTime.now());
+        return new PasswordHistory(NEW_PASSWORD, LocalDateTime.now());
     }
 }
