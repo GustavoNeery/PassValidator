@@ -6,9 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 
-@Controller
+    @Controller
 @Slf4j
 public class PasswordApi implements IPasswordApi {
 
@@ -26,7 +25,7 @@ public class PasswordApi implements IPasswordApi {
 	}
 
     @Override
-    public ResponseEntity<Object> register(@RequestBody RegisterRequestDto registerRequestDto) {
+    public ResponseEntity<Object> register(RegisterRequestDto registerRequestDto) {
         userService.register(registerRequestDto);
         return ResponseEntity.noContent().build();
     }

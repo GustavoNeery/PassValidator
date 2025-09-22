@@ -1,6 +1,7 @@
 package com.sensedia.sample.password.rest.controller;
 
 import com.sensedia.sample.password.rest.dto.RegisterRequestDto;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,5 +13,5 @@ public interface IPasswordApi {
 	ResponseEntity<Object> findAll();
 
     @PostMapping(value = "/password-validations", produces = { "application/json" })
-    public ResponseEntity<Object> register(@RequestBody RegisterRequestDto registerRequestDto);
+    ResponseEntity<Object> register(@RequestBody RegisterRequestDto registerRequestDto);
 }
