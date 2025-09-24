@@ -3,12 +3,14 @@ package com.sensedia.sample.password;
 import com.sensedia.sample.password.rest.dto.RegisterRequestDto;
 import com.sensedia.sample.password.rest.entity.PasswordHistory;
 import com.sensedia.sample.password.rest.entity.User;
+import com.sensedia.sample.password.rest.repository.IUserRepository;
 import com.sensedia.sample.password.rest.service.user.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
@@ -33,11 +35,15 @@ public class UpdateUserWithPasswordHistoryLimitTest {
     @MockitoSpyBean
     private UserService userService;
 
+    @Autowired
+    private IUserRepository userRepository;
+
     private User user;
     List<PasswordHistory> passwordsUserHistory;
 
     @BeforeEach
     void setUp() {
+        userRepository.deleteAll();
         passwordsUserHistory = new ArrayList<>();
         passwordsUserHistory.add(makeOldPassword(PASSWORD1));
         passwordsUserHistory.add(makeOldPassword(PASSWORD2));

@@ -3,6 +3,7 @@ package com.sensedia.sample.password;
 import com.sensedia.sample.password.rest.dto.RegisterRequestDto;
 import com.sensedia.sample.password.rest.entity.PasswordHistory;
 import com.sensedia.sample.password.rest.entity.User;
+import com.sensedia.sample.password.rest.repository.IUserRepository;
 import com.sensedia.sample.password.rest.service.user.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,10 +35,14 @@ public class UpdateUserPasswordTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private User user1;
+
+    @Autowired
+    private IUserRepository userRepository;
     private PasswordHistory passwordHistory1;
 
     @BeforeEach
     void setUp() {
+        userRepository.deleteAll();
         passwordHistory1 = makeOldPassword(NEW_PASSWORD);
         user1 = makeUser();
     }

@@ -15,5 +15,11 @@ public class ApiExceptionHandler {
     public ErrorResponseDto handleInvalidPassword(InvalidPasswordException ex) {
         return new ErrorResponseDto("Senha inválida", ex.getMessage());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDto handleInvalidArgument(IllegalArgumentException ex) {
+        return new ErrorResponseDto("Usuário não existe", ex.getMessage());
+    }
 }
 

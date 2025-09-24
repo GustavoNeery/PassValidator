@@ -3,6 +3,7 @@ package com.sensedia.sample.password.rest.controller;
 import com.sensedia.sample.password.rest.dto.RegisterRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -13,4 +14,7 @@ public interface IPasswordApi {
 
     @PostMapping(value = "/password-validations", produces = { "application/json" })
     ResponseEntity<Object> createOrUpdate(@RequestBody RegisterRequestDto registerRequestDto);
+
+    @GetMapping(value = "/password-histories/by/username/{username}", produces = { "application/json" })
+    ResponseEntity<Object> findPasswordHistoryByUsername(@PathVariable String username);
 }

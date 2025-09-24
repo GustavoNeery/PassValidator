@@ -51,6 +51,15 @@ public class UserService implements IUserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public List<PasswordHistory> findPasswordHistoryByUsername(String username) {
+        User userFound = this.findByUsername(username);
+        if(userFound == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        return userFound.getPasswordHistories();
+    }
+
     private User create(RegisterRequestDto registerRequestDto, String encodedPassword) {
         final User newUser = new User(
                 registerRequestDto.username(),

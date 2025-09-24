@@ -2,6 +2,7 @@ package com.sensedia.sample.password;
 
 import com.sensedia.sample.password.rest.entity.PasswordHistory;
 import com.sensedia.sample.password.rest.entity.User;
+import com.sensedia.sample.password.rest.repository.IUserRepository;
 import com.sensedia.sample.password.rest.service.user.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,10 +26,13 @@ public class FindByUsernameTest {
     private UserService userService;
 
     private User expectedUser;
+    @Autowired
+    private IUserRepository userRepository;
     private PasswordHistory passwordHistory;
 
     @BeforeEach
     void setUp() {
+        userRepository.deleteAll();
         passwordHistory = makeOldPassword(PASSWORD);
         expectedUser = makeUser();
     }
